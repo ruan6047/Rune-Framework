@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "name": "com.ruanr.runeframework",
   "displayName": "Rune Framework",
+=======
+  "name": "RuanR.RuneFramework",
+  "displayName": "RuneFramework",
+>>>>>>> main
   "description": "",
   "version": "1.0.0",
   "unity": "2022.3",
