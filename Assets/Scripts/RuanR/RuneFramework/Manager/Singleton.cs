@@ -3,23 +3,29 @@ using UnityEngine;
 
 namespace RuanR.RuneFramework.Manager
 {
-    public class Singleton<T> : SerializedMonoBehaviour where T : Component
+    public class Singleton : SerializedMonoBehaviour
     {
-        private static T _instance;
-        public static  T Instance => GetInstance();
-        private static T GetInstance()
-        {
-            if (_instance != null) return _instance;
-            var go = GameObject.Find("RuneManager");
-            if (go == null)
-            {
-                go = new GameObject("RuneManager");
-                DontDestroyOnLoad(go);
-            }
+    #region Private Variables
 
-            _instance = go.AddComponent<T>();
-            return _instance;
+        private static Singleton _instance;
+
+    #endregion
+
+    #region Public Methods
+
+        public static T GetInstance<T>() where T : Singleton
+        {
+            if (_instance != null) return _instance as T;
+            var root       = GameManager.Instance.root;
+            var gameObject = new GameObject();
+            gameObject.name = typeof(T).Name;
+            T singleton = gameObject.AddComponent<T>();
+            gameObject.transform.parent = root.transform;
+            _instance                   = singleton;
+            GameManager.Instance.managers.Add(typeof(T) , singleton);
+            return _instance as T;
         }
 
+    #endregion
     }
 }
