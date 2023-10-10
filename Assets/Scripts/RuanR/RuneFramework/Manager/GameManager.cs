@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using RuanR.RuneFramework.Utility;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -16,36 +15,45 @@ namespace RuanR.RuneFramework.Manager
 
     #region Private Variables
 
+        [ShowInInspector] private static Dictionary<Type , Singleton> _managers = new();
+
         private static GameManager _instance;
 
-        [ShowInInspector]
-        internal Dictionary<Type , Singleton> managers = new();
-
-        internal GameObject root;
+        internal static GameObject Root;
 
     #endregion
 
     #region Public Methods
 
-        public T GetManager<T>() where T : Singleton , new()
+        public static T GetManager<T>() where T : Singleton<T>
         {
-            if (managers.ContainsKey(typeof(T)))
+            if (_managers.ContainsKey(typeof(T)))
             {
-                return managers[typeof(T)] as T;
+                return _managers[typeof(T)] as T;
             }
 
-            var singleton = Singleton.GetInstance<T>();
+            var singleton = GetInstance<T>();
             return singleton;
-        }
-
-        public void Init()
-        {
-            RuneLog.Log("Hello, World!");
         }
 
     #endregion
 
     #region Private Methods
+
+        private static T GetInstance<T>() where T : Singleton<T>
+        {
+            if (_instance == null)
+                GetInstance();
+            if (_managers.ContainsKey(typeof(T)) == false)
+            {
+                var gameObject = new GameObject(typeof(T).Name);
+                T   singleton  = gameObject.AddComponent<T>();
+                gameObject.transform.parent = Root.transform;
+                _managers.Add(typeof(T) , singleton);
+            }
+
+            return _managers[typeof(T)] as T;
+        }
 
         private static GameManager GetInstance()
         {
@@ -57,8 +65,8 @@ namespace RuanR.RuneFramework.Manager
                 DontDestroyOnLoad(go);
             }
 
-            _instance      = go.AddComponent<GameManager>();
-            _instance.root = go;
+            _instance = go.AddComponent<GameManager>();
+            Root      = go;
             return _instance;
         }
 

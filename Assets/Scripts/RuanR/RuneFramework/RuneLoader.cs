@@ -1,4 +1,4 @@
-using RuanR.RuneFramework.Manager;
+using RuanR.RuneFramework.Utility;
 using Sirenix.OdinInspector;
 
 namespace RuanR.RuneFramework
@@ -9,9 +9,7 @@ namespace RuanR.RuneFramework
 
         private void Awake()
         {
-            GameManager.Instance.Init();
-            LogManager logM = GameManager.Instance.GetManager<LogManager>();
-            logM.Print();
+            LogUtility.Log("Log");
         }
 
     #endregion
