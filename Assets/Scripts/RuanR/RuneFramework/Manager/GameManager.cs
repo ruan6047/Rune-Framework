@@ -7,25 +7,7 @@ namespace RuanR.RuneFramework.Manager
 {
     public class GameManager : SerializedMonoBehaviour
     {
-    #region Public Variables
-
-        public static GameManager Instance => GetInstance();
-
-    #endregion
-
-    #region Private Variables
-
-        [ShowInInspector] private static Dictionary<Type , Singleton> _managers = new();
-
-        private static GameManager _instance;
-
-        internal static GameObject Root;
-
-    #endregion
-
-    #region Public Methods
-
-        public static T GetManager<T>() where T : Singleton<T>
+        public static T GetManager<T>() where T : Manager<T>
         {
             if (_managers.ContainsKey(typeof(T)))
             {
@@ -36,28 +18,35 @@ namespace RuanR.RuneFramework.Manager
             return singleton;
         }
 
+
+    #region Private Variables
+
+        [ShowInInspector] private static Dictionary<Type, Manager> _managers = new();
+
+        private static GameManager _instance;
+
+        internal static GameObject Root;
+
     #endregion
 
     #region Private Methods
 
-        private static T GetInstance<T>() where T : Singleton<T>
+        private static T GetInstance<T>() where T : Manager<T>
         {
-            if (_instance == null)
-                GetInstance();
             if (_managers.ContainsKey(typeof(T)) == false)
             {
                 var gameObject = new GameObject(typeof(T).Name);
-                T   singleton  = gameObject.AddComponent<T>();
-                gameObject.transform.parent = Root.transform;
-                _managers.Add(typeof(T) , singleton);
+                T singleton = gameObject.AddComponent<T>();
+                gameObject.transform.SetParent(Root.transform);
+                _managers.Add(typeof(T), singleton);
             }
 
             return _managers[typeof(T)] as T;
         }
 
-        private static GameManager GetInstance()
+        [RuntimeInitializeOnLoadMethod]
+        private static void InitializedInstance()
         {
-            if (_instance != null) return _instance;
             var go = GameObject.Find("GameManager");
             if (go == null)
             {
@@ -66,8 +55,7 @@ namespace RuanR.RuneFramework.Manager
             }
 
             _instance = go.AddComponent<GameManager>();
-            Root      = go;
-            return _instance;
+            Root = go;
         }
 
     #endregion

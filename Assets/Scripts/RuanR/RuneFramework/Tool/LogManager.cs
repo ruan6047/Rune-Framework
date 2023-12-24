@@ -4,15 +4,15 @@ using RuanR.RuneFramework.Manager;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace RuanR.RuneFramework.Log
+namespace RuanR.RuneFramework.Tool
 {
-    public class LogManager : Singleton<LogManager>
+    public class LogManager : Manager<LogManager>
     {
     #region Private Variables
 
-        [ShowInInspector] private bool                 isBlockAnyLog    = false;
+        [ShowInInspector] private bool isBlockAnyLog = false;
         [ShowInInspector] private List<LogMessageType> logTypeWhitelist = new();
-        [ShowInInspector] private List<Type>           systemBlacklist  = new();
+        [ShowInInspector] private List<Type> systemBlacklist = new();
 
     #endregion
 
@@ -27,9 +27,9 @@ namespace RuanR.RuneFramework.Log
             logTypeWhitelist.Add(LogMessageType.test);
         }
 
-        public void Log(string _message , LogMessageType _messageType = LogMessageType.all , Type _system = null)
+        public void Log(string _message, LogMessageType _messageType = LogMessageType.all, object _system = null)
         {
-            if (WhitelistFilter(_messageType) && BlacklistFilter(_system))
+            if (_system != null && WhitelistFilter(_messageType) && BlacklistFilter(_system.GetType()))
             {
                 Debug.Log(_message);
             }
@@ -46,7 +46,7 @@ namespace RuanR.RuneFramework.Log
                 return false;
             }
 
-            for (int i = 0 ; i < systemBlacklist.Count ; i++)
+            for (int i = 0; i < systemBlacklist.Count; i++)
             {
                 if (systemBlacklist[i] == _type)
                 {
@@ -59,7 +59,7 @@ namespace RuanR.RuneFramework.Log
 
         private bool WhitelistFilter(LogMessageType _messageType)
         {
-            for (int i = 0 ; i < logTypeWhitelist.Count ; i++)
+            for (int i = 0; i < logTypeWhitelist.Count; i++)
             {
                 if (logTypeWhitelist[i] == LogMessageType.all || logTypeWhitelist[i] == _messageType)
                 {
@@ -76,10 +76,10 @@ namespace RuanR.RuneFramework.Log
     [Flags]
     public enum LogMessageType
     {
-        [LabelText("全部")] all     = 0 ,
-        [LabelText("資訊")] info    = 1 ,
-        [LabelText("錯誤")] error   = 2 ,
-        [LabelText("錯誤")] warning = 3 ,
-        [LabelText("測試")] test    = 4
+        [LabelText("全部")] all = 0,
+        [LabelText("資訊")] info = 1,
+        [LabelText("錯誤")] error = 2,
+        [LabelText("錯誤")] warning = 3,
+        [LabelText("測試")] test = 4
     }
 }
