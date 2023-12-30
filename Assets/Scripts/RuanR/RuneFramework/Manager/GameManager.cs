@@ -18,16 +18,19 @@ namespace RuanR.RuneFramework.Manager
             return singleton;
         }
 
+        [RuntimeInitializeOnLoadMethod]
+        public static void InitializedInstance()
+        {
+            var go = GameObject.Find("GameManager");
+            if (go == null)
+            {
+                go = new GameObject("GameManager");
+                DontDestroyOnLoad(go);
+            }
 
-    #region Private Variables
-
-        [ShowInInspector] private static Dictionary<Type, Manager> _managers = new();
-
-        private static GameManager _instance;
-
-        internal static GameObject Root;
-
-    #endregion
+            _instance = go.AddComponent<GameManager>();
+            Root = go;
+        }
 
     #region Private Methods
 
@@ -44,19 +47,15 @@ namespace RuanR.RuneFramework.Manager
             return _managers[typeof(T)] as T;
         }
 
-        [RuntimeInitializeOnLoadMethod]
-        private static void InitializedInstance()
-        {
-            var go = GameObject.Find("GameManager");
-            if (go == null)
-            {
-                go = new GameObject("GameManager");
-                DontDestroyOnLoad(go);
-            }
+    #endregion
 
-            _instance = go.AddComponent<GameManager>();
-            Root = go;
-        }
+    #region Private Variables
+
+        [ShowInInspector] private static Dictionary<Type, Manager> _managers = new();
+
+        private static GameManager _instance;
+
+        internal static GameObject Root;
 
     #endregion
     }
