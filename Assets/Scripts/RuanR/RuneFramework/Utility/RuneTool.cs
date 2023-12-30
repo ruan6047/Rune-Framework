@@ -8,7 +8,7 @@ namespace RuanR.RuneFramework.Utility
     #region Public Methods
 
         public static void Log(this object _system, string _message = null,
-                               LogMessageType _messageType = LogMessageType.all)
+                               LogMessageType _messageType = LogMessageType.All)
         {
             LogManager.Instance.Log(_message, _messageType, _system);
         }

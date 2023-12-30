@@ -20,14 +20,14 @@ namespace RuanR.RuneFramework.Tool
 
         public override void Init()
         {
-            logTypeWhitelist.Add(LogMessageType.all);
-            logTypeWhitelist.Add(LogMessageType.info);
-            logTypeWhitelist.Add(LogMessageType.error);
-            logTypeWhitelist.Add(LogMessageType.warning);
-            logTypeWhitelist.Add(LogMessageType.test);
+            logTypeWhitelist.Add(LogMessageType.All);
+            logTypeWhitelist.Add(LogMessageType.Info);
+            logTypeWhitelist.Add(LogMessageType.Error);
+            logTypeWhitelist.Add(LogMessageType.Warning);
+            logTypeWhitelist.Add(LogMessageType.Test);
         }
 
-        public void Log(string _message, LogMessageType _messageType = LogMessageType.all, object _system = null)
+        public void Log(string _message, LogMessageType _messageType = LogMessageType.All, object _system = null)
         {
             if (_system != null && WhitelistFilter(_messageType) && BlacklistFilter(_system.GetType()))
             {
@@ -46,7 +46,7 @@ namespace RuanR.RuneFramework.Tool
                 return false;
             }
 
-            for (int i = 0; i < systemBlacklist.Count; i++)
+            for (var i = 0; i < systemBlacklist.Count; i++)
             {
                 if (systemBlacklist[i] == _type)
                 {
@@ -59,9 +59,9 @@ namespace RuanR.RuneFramework.Tool
 
         private bool WhitelistFilter(LogMessageType _messageType)
         {
-            for (int i = 0; i < logTypeWhitelist.Count; i++)
+            for (var i = 0; i < logTypeWhitelist.Count; i++)
             {
-                if (logTypeWhitelist[i] == LogMessageType.all || logTypeWhitelist[i] == _messageType)
+                if (logTypeWhitelist[i] == LogMessageType.All || logTypeWhitelist[i] == _messageType)
                 {
                     return true;
                 }
@@ -76,10 +76,10 @@ namespace RuanR.RuneFramework.Tool
     [Flags]
     public enum LogMessageType
     {
-        [LabelText("全部")] all = 0,
-        [LabelText("資訊")] info = 1,
-        [LabelText("錯誤")] error = 2,
-        [LabelText("錯誤")] warning = 3,
-        [LabelText("測試")] test = 4
+        [LabelText("全部")] All = 0,
+        [LabelText("資訊")] Info = 1,
+        [LabelText("錯誤")] Error = 2,
+        [LabelText("錯誤")] Warning = 3,
+        [LabelText("測試")] Test = 4,
     }
 }

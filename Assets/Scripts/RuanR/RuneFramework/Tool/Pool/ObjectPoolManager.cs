@@ -11,7 +11,7 @@ namespace RuanR.RuneFramework.Tool.Pool
     {
         #region Private Variables
 
-        [ShowInInspector, HideReferenceObjectPicker]
+        [ShowInInspector] [HideReferenceObjectPicker]
         private Dictionary<Type, IPool> pools = new();
 
         #endregion
@@ -62,11 +62,11 @@ namespace RuanR.RuneFramework.Tool.Pool
                 }
 
                 _result = new T();
-                _result.Log($"{typeof(T).Name}物件池中數量不夠 生成新物件", LogMessageType.info);
+                _result.Log($"{typeof(T).Name}物件池中數量不夠 生成新物件", LogMessageType.Info);
                 return;
             }
 
-            this.Log($"{typeof(T).Name}並不存在於物件池中", LogMessageType.warning);
+            this.Log($"{typeof(T).Name}並不存在於物件池中", LogMessageType.Warning);
         }
 
         public void Spawn<T>(out T _result, string _name, Transform _parent = null)
@@ -82,11 +82,11 @@ namespace RuanR.RuneFramework.Tool.Pool
                     return;
                 }
 
-                this.Log($"{type.Name}物件池中 並沒有名為{_name}的樣板", LogMessageType.warning);
+                this.Log($"{type.Name}物件池中 並沒有名為{_name}的樣板", LogMessageType.Warning);
                 return;
             }
 
-            this.Log($"{type.Name}並不存在於物件池中", LogMessageType.warning);
+            this.Log($"{type.Name}並不存在於物件池中", LogMessageType.Warning);
         }
 
         public void InitPool<T>(IPoolItemConfig _config = null) where T : class, IPoolItem, new()

@@ -39,7 +39,7 @@ namespace RuanR.RuneFramework.Manager
             if (_managers.ContainsKey(typeof(T)) == false)
             {
                 var gameObject = new GameObject(typeof(T).Name);
-                T singleton = gameObject.AddComponent<T>();
+                var singleton = gameObject.AddComponent<T>();
                 gameObject.transform.SetParent(Root.transform);
                 _managers.Add(typeof(T), singleton);
             }

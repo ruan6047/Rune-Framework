@@ -61,7 +61,7 @@ namespace RuanR.RuneFramework.Tool.Pool
         {
             if (pools.TryGetValue(_prefab.name, out var pool))
             {
-                this.Log("警告:此物件已生成物件池 無須生成", LogMessageType.warning);
+                this.Log("警告:此物件已生成物件池 無須生成", LogMessageType.Warning);
                 return;
             }
             var o = new GameObject(_prefab.name);
